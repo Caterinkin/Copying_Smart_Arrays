@@ -1,7 +1,6 @@
 #include <iostream>
 #include <stdexcept>
-#include <algorithm> // äëÿ std::copy
-
+#include <algorithm> // для std::copy
 
 class smart_array
 {
@@ -11,37 +10,37 @@ private:
     size_t capacity;
 
 public:
-    // Êîíñòðóêòîð
+    // Конструктор
     smart_array(size_t initial_capacity)
         : data(new int[initial_capacity]), size(0), capacity(initial_capacity) 
     {
     }
 
-    // Äåñòðóêòîð
+    // Деструктор
     ~smart_array()
     {
         delete[] data;
     }
 
-    // Êîíñòðóêòîð êîïèðîâàíèÿ (ãëóáîêîå êîïèðîâàíèå)
+    // Конструктор копирования (глубокое копирование)
     smart_array(const smart_array& other)
         : data(new int[other.capacity]), size(other.size), capacity(other.capacity) 
     {
-        std::copy(other.data, other.data + other.size, data); // Êîïèðóåì ýëåìåíòû
+        std::copy(other.data, other.data + other.size, data); // Копируем элементы
     }
 
-    // Îïåðàòîð ïðèñâàèâàíèÿ (ãëóáîêîå êîïèðîâàíèå)
+    // Оператор присваивания (глубокое копирование)
     smart_array& operator=(const smart_array& other) 
     {
-        if (this == &other) // Ïðîâåðêà íà ñàìîïðèñâàèâàíèå (arr = arr)
+        if (this == &other) // Проверка на самоприсваивание (arr = arr)
         { 
             return *this;
         }
 
-        // Îñâîáîæäàåì ñòàðóþ ïàìÿòü
+        // Освобождаем старую память
         delete[] data;
 
-        // Âûäåëÿåì íîâóþ ïàìÿòü è êîïèðóåì äàííûå
+        // Выделяем новую память и копируем данные
         capacity = other.capacity;
         size = other.size;
         data = new int[capacity];
@@ -50,22 +49,22 @@ public:
         return *this;
     }
 
-    // Äîáàâëåíèå ýëåìåíòà
+    // Добавление элемента
     void add_element(int value) 
     {
         if (size >= capacity) 
         {
-            throw std::out_of_range("Ïðåâûøåíà âìåñòèìîñòü ìàññèâà");
+            throw std::out_of_range("Превышена вместимость массива");
         }
         data[size++] = value;
     }
 
-    // Ïîëó÷åíèå ýëåìåíòà
+    // Получение элемента
     int get_element(size_t index) const 
     {
         if (index >= size)
         {
-            throw std::out_of_range("Èíäåêñ çà ïðåäåëàìè ìàññèâà");
+            throw std::out_of_range("Индекс за пределами массива");
         }
         return data[index];
     }
@@ -74,7 +73,7 @@ public:
 int main() 
 {
     setlocale(LC_ALL, "rus");
-    try 
+        try 
     {
         smart_array arr(5);
         arr.add_element(1);
@@ -85,7 +84,7 @@ int main()
         new_array.add_element(44);
         new_array.add_element(34);
 
-        arr = new_array; // Òåïåðü ðàáîòàåò êîððåêòíî!
+        arr = new_array; // Теперь работает корректно!
 
         std::cout << arr.get_element(0) << std::endl; // 44
         std::cout << arr.get_element(1) << std::endl; // 34
