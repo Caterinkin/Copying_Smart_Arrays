@@ -1,6 +1,7 @@
 #include <iostream>
 #include <stdexcept>
-#include <algorithm> // для std::copy
+#include <algorithm> // Г¤Г«Гї std::copy
+
 
 class smart_array
 {
@@ -10,37 +11,37 @@ private:
     size_t capacity;
 
 public:
-    // Конструктор
+    // ГЉГ®Г­Г±ГІГ°ГіГЄГІГ®Г°
     smart_array(size_t initial_capacity)
         : data(new int[initial_capacity]), size(0), capacity(initial_capacity) 
     {
     }
 
-    // Деструктор
+    // Г„ГҐГ±ГІГ°ГіГЄГІГ®Г°
     ~smart_array()
     {
         delete[] data;
     }
 
-    // Конструктор копирования (глубокое копирование)
+    // ГЉГ®Г­Г±ГІГ°ГіГЄГІГ®Г° ГЄГ®ГЇГЁГ°Г®ГўГ Г­ГЁГї (ГЈГ«ГіГЎГ®ГЄГ®ГҐ ГЄГ®ГЇГЁГ°Г®ГўГ Г­ГЁГҐ)
     smart_array(const smart_array& other)
         : data(new int[other.capacity]), size(other.size), capacity(other.capacity) 
     {
-        std::copy(other.data, other.data + other.size, data); // Копируем элементы
+        std::copy(other.data, other.data + other.size, data); // ГЉГ®ГЇГЁГ°ГіГҐГ¬ ГЅГ«ГҐГ¬ГҐГ­ГІГ»
     }
 
-    // Оператор присваивания (глубокое копирование)
+    // ГЋГЇГҐГ°Г ГІГ®Г° ГЇГ°ГЁГ±ГўГ ГЁГўГ Г­ГЁГї (ГЈГ«ГіГЎГ®ГЄГ®ГҐ ГЄГ®ГЇГЁГ°Г®ГўГ Г­ГЁГҐ)
     smart_array& operator=(const smart_array& other) 
     {
-        if (this == &other) // Проверка на самоприсваивание (arr = arr)
+        if (this == &other) // ГЏГ°Г®ГўГҐГ°ГЄГ  Г­Г  Г±Г Г¬Г®ГЇГ°ГЁГ±ГўГ ГЁГўГ Г­ГЁГҐ (arr = arr)
         { 
             return *this;
         }
 
-        // Освобождаем старую память
+        // ГЋГ±ГўГ®ГЎГ®Г¦Г¤Г ГҐГ¬ Г±ГІГ Г°ГіГѕ ГЇГ Г¬ГїГІГј
         delete[] data;
 
-        // Выделяем новую память и копируем данные
+        // Г‚Г»Г¤ГҐГ«ГїГҐГ¬ Г­Г®ГўГіГѕ ГЇГ Г¬ГїГІГј ГЁ ГЄГ®ГЇГЁГ°ГіГҐГ¬ Г¤Г Г­Г­Г»ГҐ
         capacity = other.capacity;
         size = other.size;
         data = new int[capacity];
@@ -49,22 +50,22 @@ public:
         return *this;
     }
 
-    // Добавление элемента
+    // Г„Г®ГЎГ ГўГ«ГҐГ­ГЁГҐ ГЅГ«ГҐГ¬ГҐГ­ГІГ 
     void add_element(int value) 
     {
         if (size >= capacity) 
         {
-            throw std::out_of_range("Превышена вместимость массива");
+            throw std::out_of_range("ГЏГ°ГҐГўГ»ГёГҐГ­Г  ГўГ¬ГҐГ±ГІГЁГ¬Г®Г±ГІГј Г¬Г Г±Г±ГЁГўГ ");
         }
         data[size++] = value;
     }
 
-    // Получение элемента
+    // ГЏГ®Г«ГіГ·ГҐГ­ГЁГҐ ГЅГ«ГҐГ¬ГҐГ­ГІГ 
     int get_element(size_t index) const 
     {
         if (index >= size)
         {
-            throw std::out_of_range("Индекс за пределами массива");
+            throw std::out_of_range("Г€Г­Г¤ГҐГЄГ± Г§Г  ГЇГ°ГҐГ¤ГҐГ«Г Г¬ГЁ Г¬Г Г±Г±ГЁГўГ ");
         }
         return data[index];
     }
@@ -84,7 +85,7 @@ int main()
         new_array.add_element(44);
         new_array.add_element(34);
 
-        arr = new_array; // Теперь работает корректно!
+        arr = new_array; // Г’ГҐГЇГҐГ°Гј Г°Г ГЎГ®ГІГ ГҐГІ ГЄГ®Г°Г°ГҐГЄГІГ­Г®!
 
         std::cout << arr.get_element(0) << std::endl; // 44
         std::cout << arr.get_element(1) << std::endl; // 34
